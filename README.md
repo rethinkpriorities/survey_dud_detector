@@ -3,7 +3,7 @@
 Apply methods to detect bad responses in surveys.
 
 
-#### Detect Straightlining
+### Detect Straightlining
 
 **Straightlining** involves someone answering the same item on a scale for all the questions (e.g., saying "Strongly Agree" to everything).
 
@@ -21,7 +21,7 @@ df = df[straightlining < 1]
 ```
 
 
-#### Multiple Low Incidence Detection
+### Multiple Low Incidence Detection
 
 **Multiple low incidence** involves someone answering multiple questions with an unlikely answer (e.g., saying they are a Native American or that they are non-binary). Obviously unlikely answers themselves are not an issue, but multiple low incidence can indicate someone might be trolling (i.e., pretenting to be a non-binary Native American who is Very Conservative and earns over $150K).
 
@@ -31,7 +31,7 @@ demographics = ['gender', 'race', 'education', 'urban_rural', 'politics', 'incom
 low_incidence_counts = detect_low_incidence(df[demographics], low_incidence_threshold=0.04)
 
 # Examine incidence of straightlining (results are number of low incidence answers)
-low_incidence_counts.value_counts()
+print(low_incidence_counts.value_counts())
 
 # Drop everyone who gave three or more low incidence answers
 df = df[low_incidence_counts < 3]
