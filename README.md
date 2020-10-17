@@ -40,3 +40,9 @@ print(df[low_incidence_counts == 3])
 # Drop everyone who gave three or more low incidence answers
 df = df[low_incidence_counts < 3]
 ```
+
+
+### Installation
+
+`pip3 install survey_dud_detector`
+
