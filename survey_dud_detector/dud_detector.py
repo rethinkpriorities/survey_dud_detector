@@ -9,7 +9,7 @@ def detect_low_incidence(df, low_incidence_threshold=0.04):
     counts = None
 
     for c in df.columns:
-        count_ = df[c].replace(dict((df[c].value_counts(normalize=True) <= low_incidence_threshold).astype(int)))
+        count_ = df[c].fillna('na').replace(dict((df[c].fillna('na').value_counts(normalize=True) <= low_incidence_threshold).astype(int)))
         if counts is None:
             counts = count_
         else:
