@@ -33,6 +33,10 @@ low_incidence_counts = detect_low_incidence(df[demographics], low_incidence_thre
 # Examine incidence of straightlining (results are number of low incidence answers)
 print(low_incidence_counts.value_counts())
 
+# It might be good to look at the values of people with a high number of low incidence answers
+# just in case this is actually legitimate.
+print(df[low_incidence_counts == 3])
+
 # Drop everyone who gave three or more low incidence answers
 df = df[low_incidence_counts < 3]
 ```
