@@ -35,7 +35,7 @@ print(low_incidence_counts.value_counts())
 
 # It might be good to look at the values of people with a high number of low incidence answers
 # just in case this is actually legitimate.
-print(df[low_incidence_counts == 3])
+print(df[low_incidence_counts >= 3])
 
 # Drop everyone who gave three or more low incidence answers
 df = df[low_incidence_counts < 3]
