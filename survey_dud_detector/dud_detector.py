@@ -34,7 +34,7 @@ def detect_low_incidence(df, low_incidence_threshold=0.04, adjust=True):
         count_ = df[c].fillna('na').replace(dict(is_low_incidence_)).astype(int)
         if adjust:
             odds_ = count_.sum() / len(count_)
-            count_ = df[c].replace({True: 1 - odds_, False: odds_})
+            count_ = count_.replace({True: odds_, False: 1 - odds_})
         if counts is None:
             counts = count_
         elif adjust:
