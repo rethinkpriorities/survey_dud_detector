@@ -3,23 +3,48 @@ import pandas as pd
 from collections import Counter
 
 
-def detect_straightlining(df):
-    return df.apply(lambda xs: max(Counter([str(x) for x in xs.values]).values()), axis=1) / df.shape[1]
+def detect_straightlining(df, adjust=True):
+    """Detect straightlining
+
+    :param df pandas.DataFrame.
+    :param adjust bool. If True, the function will return the percentage of answers on which a user
+        was straightlining. Otherwise, if False, the function returns the number of answers the user
+        was straightlining.
+    """
+    straightlining = df.apply(lambda xs: max(Counter([str(x) for x in xs.values]).values()), axis=1)
+    if adjust:
+        return straightlining / df.shape[1]
+    else:
+        return straightlining
 
 
-def detect_low_incidence(df, low_incidence_threshold=0.04, adjust=False):
+def detect_low_incidence(df, low_incidence_threshold=0.04, adjust=True):
+    """
+    Detect multiple low incidence values.
+
+    :param df pandas.DataFrame.
+    :param low_incidence_threshold float. The likelihood at which below defines low incidence.
+    :param adjust bool. If True, the function will return the expected number of people to have that likelihood value.
+        Otherwise, if False, the function returns the number of low incidence columns.
+    """
     counts = None
+    odds = 0
 
     for c in df.columns:
-        count_ = df[c].fillna('na').replace(dict((df[c].fillna('na').value_counts(normalize=True) <= low_incidence_threshold).astype(int)))
+        is_low_incidence_ = df[c].fillna('na').value_counts(normalize=True) <= low_incidence_threshold
+        count_ = df[c].fillna('na').replace(dict(is_low_incidence_)).astype(int)
+        if adjust:
+            odds_ = count_.sum() / len(count_)
+            count_ = df[c].replace({True: 1 - odds_, False: odds_})
         if counts is None:
             counts = count_
+        elif adjust:
+            counts *= count_
         else:
             counts += count_
 
     if adjust:
-        counts = pd.Series([low_incidence_threshold ** c * len(df) for c in counts])
-        return pd.Series([1 if c >= 1 else c for c in counts]) 
+        return pd.Series([c * df.shape[0] * df.shape[1] for c in counts])
     else:
         return counts.astype(int)
 
