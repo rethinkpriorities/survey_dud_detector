@@ -28,7 +28,6 @@ def detect_low_incidence(df, low_incidence_threshold=0.04, adjust=True):
         Otherwise, if False, the function returns the number of low incidence columns.
     """
     counts = None
-    odds = 0
 
     for c in df.columns:
         is_low_incidence_ = df[c].fillna('na').value_counts(normalize=True) <= low_incidence_threshold
