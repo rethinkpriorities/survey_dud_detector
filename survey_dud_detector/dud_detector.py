@@ -34,16 +34,16 @@ def detect_low_incidence(df, low_incidence_threshold=0.04, adjust=True):
         count_ = df[c].fillna('na').replace(dict(is_low_incidence_)).astype(int)
         if adjust:
             odds_ = count_.sum() / len(count_)
-            count_ = count_.replace({True: odds_, False: 1 - odds_})
+            count_ = count_.replace({True: odds_, False: 1 - odds_}).astype(float)
         if counts is None:
             counts = count_
         elif adjust:
-            counts *= count_
+            counts = pd.Series(counts) * pd.Series(count_)
         else:
-            counts += count_
+            counts = pd.Series(counts) + pd.Series(count_)
 
     if adjust:
-        return pd.Series([c * df.shape[0] * df.shape[1] for c in counts])
+        return pd.Series([c * df.shape[0] for c in counts])
     else:
         return counts.astype(int)
 
