@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
      name='survey_dud_detector',  
-     version='0.1',
+     version='0.2',
      author='Peter Hurford',
      author_email='peter@peterhurford.com',
      description='Automatically detect bad responses in survey responses',
